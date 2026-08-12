@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { projects } from "@/lib/data";
 import SectionHeader from "./SectionHeader";
 
@@ -13,7 +14,7 @@ export default function Projects() {
           <SectionHeader
             label="Selected Projects"
             heading="Projects and ideas I&apos;ve worked on."
-            subheading="A collection of academic and personal projects. Project details will be expanded as my portfolio grows."
+            subheading="A collection of academic and personal projects developed during my studies."
             id="projects-heading"
           />
         </div>
@@ -47,33 +48,56 @@ function ProjectCard({
       aria-label={`Project: ${project.title}`}
     >
       {/* Image / Placeholder */}
-      <div className="relative h-44 bg-gradient-to-br from-navy-950 to-navy-800 overflow-hidden flex-shrink-0">
-        {/* Decorative grid */}
-        <div
-          className="absolute inset-0 opacity-10"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        {/* Project number */}
-        <div className="absolute top-4 left-4 font-mono text-5xl font-bold text-white/10 select-none" aria-hidden="true">
-          {project.number}
-        </div>
-        {/* Category badge */}
-        <div className="absolute top-4 right-4">
-          <span className="badge bg-white/10 text-white/80 border border-white/10 font-medium text-[11px]">
+      <div className="relative h-48 bg-gradient-to-br from-navy-950 to-navy-800 overflow-hidden flex-shrink-0">
+        {project.image ? (
+          <Image
+            src={project.image}
+            alt={project.imageAlt}
+            fill
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+        ) : (
+          <>
+            {/* Decorative grid for placeholder */}
+            <div
+              className="absolute inset-0 opacity-10"
+              aria-hidden="true"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)",
+                backgroundSize: "24px 24px",
+              }}
+            />
+            <div
+              className="absolute top-4 left-4 font-mono text-5xl font-bold text-white/10 select-none"
+              aria-hidden="true"
+            >
+              {project.number}
+            </div>
+            <div className="absolute bottom-4 left-4 right-4">
+              <p className="text-white/40 font-mono text-xs">
+                [ Project image coming soon ]
+              </p>
+            </div>
+          </>
+        )}
+
+        {/* Category badge — always shown */}
+        <div className="absolute top-3 right-3 z-10">
+          <span className="badge bg-black/40 text-white/90 border border-white/10 font-medium text-[11px] backdrop-blur-sm">
             {project.category}
           </span>
         </div>
-        {/* Placeholder label */}
-        <div className="absolute bottom-4 left-4 right-4">
-          <p className="text-white/40 font-mono text-xs">
-            [ Project image coming soon ]
-          </p>
-        </div>
+
+        {/* Period badge */}
+        {project.period && (
+          <div className="absolute bottom-3 left-3 z-10">
+            <span className="badge bg-black/40 text-white/80 border border-white/10 font-mono text-[11px] backdrop-blur-sm">
+              {project.period}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -81,12 +105,38 @@ function ProjectCard({
         <h3 className="text-base font-semibold text-ink mb-2 group-hover:text-accent transition-colors">
           {project.title}
         </h3>
-        <p className="text-sm text-ink-secondary leading-relaxed flex-1 mb-5">
+        <p className="text-sm text-ink-secondary leading-relaxed mb-4">
           {project.description}
         </p>
 
+        {/* Key features */}
+        {project.features && project.features.length > 0 && (
+          <div className="mb-4">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted mb-2">
+              Key Features
+            </p>
+            <ul className="space-y-1.5">
+              {project.features.map((feature, i) => (
+                <li key={i} className="flex gap-2 text-xs text-ink-secondary leading-relaxed">
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-accent flex-shrink-0" aria-hidden="true" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Development note */}
+        {project.note && (
+          <div className="mb-4 p-3 rounded-lg bg-amber-50 border border-amber-200">
+            <p className="text-xs text-amber-700 leading-relaxed">
+              <span className="font-semibold">Note: </span>{project.note}
+            </p>
+          </div>
+        )}
+
         {/* Technologies */}
-        <div className="flex flex-wrap gap-1.5 mb-5">
+        <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
           {project.technologies.map((tech) => (
             <span
               key={tech}
@@ -111,7 +161,7 @@ function ProjectCard({
               GitHub
             </a>
           ) : (
-            <span className="flex items-center gap-1.5 text-xs text-ink-muted cursor-default">
+            <span className="flex items-center gap-1.5 text-xs text-ink-muted cursor-default select-none">
               <GitHubIcon />
               GitHub
             </span>
