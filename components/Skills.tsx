@@ -23,14 +23,14 @@ export default function Skills() {
             <h3 className="reveal text-xs font-semibold uppercase tracking-widest text-ink-muted mb-6">
               Technical Skills
             </h3>
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               {technicalSkills.map((skill, i) => (
                 <div
                   key={skill.name}
-                  className={`reveal reveal-delay-${Math.min(i + 1, 4)} card p-4 flex items-center justify-between`}
+                  className={`reveal reveal-delay-${Math.min(i + 1, 4)} card p-4 flex items-center gap-3`}
                 >
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" aria-hidden="true" />
                   <span className="text-sm font-medium text-ink">{skill.name}</span>
-                  <span className="text-[11px] text-ink-muted font-medium">{skill.category}</span>
                 </div>
               ))}
             </div>

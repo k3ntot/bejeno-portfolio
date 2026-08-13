@@ -127,10 +127,7 @@ export default function Hero() {
 }
 
 function ProfilePhoto() {
-  // To show your real photo:
-  // 1. Save your photo to /public/profile.jpg
-  // 2. Change `hasPhoto` to true
-  const hasPhoto = false;
+  const hasPhoto = true;
 
   return (
     <div className="relative flex-shrink-0">
